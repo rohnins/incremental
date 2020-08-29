@@ -1,9 +1,9 @@
 var gameData = {
     gold: 0,
     goldPerClick: 1,
-    goldPerClickCost: 10
+    goldPerClickCost: 10,
+    lastTick: Date.now()
 }
-
 function mineGold(){
     gameData.gold += gameData.goldPerClick
     document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined"
@@ -21,7 +21,10 @@ function buyGoldPerClick() {
 }
 
 var mainGameLoop = window.setInterval(function() {
-    mineGold()
+    diff = Date.now() - gameData.lastTick;
+    gameData.lastTick = Date.now() // DOn't forget to update lastTick.
+    gameData.gold += gameData.goldPerClick * (diff / 1000) //divide by how often (ms) mainGameLoop is ran
+    document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined"
 }, 1000)
 
 var saveGameLoop = window.setInterval(function() {
