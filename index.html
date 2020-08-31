@@ -1,13 +1,18 @@
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <title>Gold Miner</title>
-</head>
-<body>
-    <p id="goldMined">0 Gold Mined</p>
-    <button onclick="mineGold()">Mine Gold</button>
-    <button onclick="buyGoldPerClick()" id="perClickUpgrade">Upgrade Pickaxe (Currently Level 1) Cost: 10 Gold</button>
-    <script src="main.js" charset="UTF-8" type="text/javascript"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width-device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie-edge">
+        <link rel="stylesheet" href="styles.css">
+        <title>Incremental Collecting</title>
+    </head>
 
-</body>
+    <body>
+        <div id="cashCollected">0 cash</div>
+        <button onclick="BottleCollect()">Collect Bottles</button>
+        <button onclick="buySellOnline()" id="SellOnlineUpgrade">Sell Online (+2cash/s) 5 cash</button>
+        <button onclick="buySellDrugs()" id="SellDrugsUpgrade">Sell Drugs (+10cash/s) 100cash</button>
+        <script src="main.js" charset="utf-8" type="text/javascript"></script>
+    </body>
 </html>

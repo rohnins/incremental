@@ -1,37 +1,67 @@
+var saveGame = localStorage.getItem('cashCollectSave')
 var gameData = {
-    gold: 0,
-    goldPerClick: 1,
-    goldPerClickCost: 10,
+    cash: 0,
+    cashPerBottle: 0.25,
+
+    cashSellOnline: 0,
+    costSellOnline: 5,
+
+    cashSellDrugs: 0,
+    costSellDrugs: 100,
     lastTick: Date.now()
 }
-function mineGold(){
-    gameData.gold += gameData.goldPerClick
-    document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined"
+
+function update(id, content) {
+    document.getElementById(id).innerHTML = content;
+  }
+
+function BottleCollect() {
+    gameData.cash += gameData.cashPerBottle
+    update("cashCollected", gameData.cash + " cash")
 }
 
-function buyGoldPerClick() {
-    if (gameData.gold >= gameData.goldPerClickCost) {
-        gameData.gold -= gameData.goldPerClickCost
-        gameData.goldPerClick += 1
-        gameData.goldPerClickCost *=2
-        document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined"
-        document.getElementById("perClickUpgrade").innerHTML = "Upgrade Pickaxe (Currently Level " + gameData.goldPerClick + ") Cost: " + gameData.goldPerClickCost + " Gold"
+function buySellOnline() {
+    if (gameData.cash >= gameData.costSellOnline) {
+        gameData.cash -= gameData.costSellOnline
+        gameData.cashSellOnline += 2
+        gameData.costSellOnline *=1.5
+        update("cashCollected", gameData.cash + " cash")
+        update("SellOnlineUpgrade", "Sell Online (+2cash/s)" + gameData.costSellOnline + "cash")
     }
+}
 
+function buySellDrugs() {
+    if (gameData.cash >= gameData.costSellDrugs) {
+        gameData.cash -= gameData.costSellDrugs
+        gameData.cashSellDrugs += 10
+        gameData.costSellDrugs *=1.5
+        update("cashCollected", gameData.cash + " cash")
+        update("SellDrugsUpgrade", "Sell Drugs (+10cash/s)" + gameData.costSellDrugs + "cash")
+    }
+}
+
+
+function GenerateCash(){
+    gameData.cash = gameData.cash + gameData.cashSellOnline + gameData.cashSellDrugs
+    update("cashCollected", gameData.cash + " cash")
 }
 
 var mainGameLoop = window.setInterval(function() {
-    diff = Date.now() - gameData.lastTick;
-    gameData.lastTick = Date.now() // DOn't forget to update lastTick.
-    gameData.gold += gameData.goldPerClick * (diff / 1000) //divide by how often (ms) mainGameLoop is ran
-    document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined"
-}, 1000)
+    GenerateCash()
+  }, 1000)
+
 
 var saveGameLoop = window.setInterval(function() {
-    localStorage.setItem("goldMinerSave", JSON.stringify(gameData))
-  }, 1500)
+    localStorage.setItem("cashCollectSave", JSON.stringify(gameData))
+}, 15000)
 
-var savegame = JSON.parse(localStorage.getItem("goldMinerSave"))
-  if (savegame !== null) {
-    gameData = savegame
-  }
+var savegame = JSON.parse(localStorage.getItem("cashCollectSave"))
+if (savegame !== null) {
+  gameData = savegame
+}
+
+if (typeof saveGame.cash !== "undefined") gameData.cash = saveGame.cash;
+if (typeof saveGame.cashSellOnline !== "undefined") gameData.cashSellOnline = saveGame.cashSellOnline;
+if (typeof saveGame.costSellOnline !== "undefined") gameData.costSellOnline = saveGame.costSellOnline;
+if (typeof saveGame.cashSellDrugs !== "undefined") gameData.cashSellDrugs = saveGame.cashSellDrugs;
+if (typeof saveGame.costSellDrugs !== "undefined") gameData.costSellDrugs = saveGame.costSellDrugs;
