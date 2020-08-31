@@ -1,5 +1,5 @@
 # incremental
-Incremental game training
+this will be my incremental training area. Trying out new mechanics and gets updated as frequent as possible. Have fun.
 
-go to rohnins.github.io/incremental
+https://rohnins.github.io/incremental
 
